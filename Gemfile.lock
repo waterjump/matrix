@@ -113,6 +113,7 @@ GEM
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    rubyzip (1.2.0)
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -142,6 +143,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   rails (= 4.2.7.1)
   rspec-rails (~> 3.5)
+  rubyzip
   sdoc (~> 0.4.0)
   web-console (~> 2.0)
 

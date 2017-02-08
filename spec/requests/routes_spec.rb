@@ -6,7 +6,7 @@ RSpec.describe 'Routes', type: :request do
     before(:each) { get routes_path }
 
     let(:files) do
-      %w(sentinels sniffers loopholes).map do |entry|
+      Rails.application.config.source_names.map do |entry|
         "#{entry}.zip"
       end.sort
     end
@@ -21,6 +21,12 @@ RSpec.describe 'Routes', type: :request do
 
     it 'saves binary files' do
       expect((Dir.entries(Rails.root.join('tmp')) & files).sort).to eq(files)
+    end
+
+    it 'unzips binary files' do
+      Rails.application.config.source_names.each do |src|
+        expect(Dir.entries(Rails.root.join('tmp', src)).count).to be > 0
+      end
     end
   end
 end
