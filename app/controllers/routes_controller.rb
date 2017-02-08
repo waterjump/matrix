@@ -2,16 +2,10 @@ class RoutesController < ApplicationController
 
   def parse
     sources = %w(sentinels sniffers loopholes)
-    sources.each do |src|
-      file_name = "tmp/#{src}.zip"
-      File.delete(file_name)
-      File.open(file_name, 'wb') do |file|
-        file.binmode
-        resp = HTTParty.get("#{Rails.application.secrets.endpoint}?passphrase=#{Rails.application.secrets.passphrase}&source=#{src}")
-        file.write resp.parsed_response
-        file.close
-      end
+    success = sources.each_with_object([]) do |src, results|
+      gateway = MatrixGateway.new(src)
+      results << gateway.call
     end
-    render json: { status: 'Success' }
+    render json: { status: success.all? ? 'OK' : 'Error'}
   end
 end

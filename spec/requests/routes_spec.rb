@@ -16,7 +16,7 @@ RSpec.describe 'Routes', type: :request do
       expect(response).to have_http_status(200)
       parsed_body = JSON.parse(response.body)
       expect(parsed_body).to be_kind_of(Hash)
-      expect(parsed_body['status']).to eq('Success')
+      expect(parsed_body['status']).to eq('OK')
     end
 
     it 'saves binary files' do
