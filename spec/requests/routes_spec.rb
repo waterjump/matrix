@@ -3,7 +3,11 @@ require 'rails_helper'
 RSpec.describe 'Routes', type: :request do
   describe 'GET /routes' do
 
-    before(:each) { get routes_path }
+    before(:each) do
+      VCR.use_cassette('matrix') do
+        get routes_path
+      end
+    end
 
     let(:files) do
       Rails.application.config.source_names.map do |entry|

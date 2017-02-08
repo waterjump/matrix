@@ -5,7 +5,19 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'vcr'
 # Add additional requires below this line. Rails is not loaded until this point!
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
+  config.hook_into :webmock
+  config.ignore_localhost = true
+  config.default_cassette_options = {
+    record: :none,
+    match_requests_on: [:method, :uri],
+    allow_playback_repeats: true
+  }
+end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
