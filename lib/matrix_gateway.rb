@@ -1,13 +1,9 @@
 require 'zip'
 
-class MatrixGateway
+class MatrixGateway < Util
 
   def self.endpoint
     "#{Rails.application.secrets.endpoint}?passphrase=#{Rails.application.secrets.passphrase}"
-  end
-
-  def initialize
-    @success = true
   end
 
   def perform
@@ -46,11 +42,5 @@ class MatrixGateway
 
   def file_name(src)
     file_name ||= "tmp/#{src}.zip"
-  end
-
-  def notify_error(error)
-    @success = false
-    raise error if Rails.env.development? || Rails.env.test?
-    Rails.logger.info ("ERROR #{[error.message, error.backtrace]}")
   end
 end

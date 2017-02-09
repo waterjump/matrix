@@ -2,7 +2,8 @@ class RoutesController < ApplicationController
 
   def parse
     gateway = MatrixGateway.new
-    if gateway.perform
+    gateway.perform
+    if Sorter.new.perform
       render json: { status: 'OK' }, status: 200
     else
       render json: { status: 'failure' }, status: 500

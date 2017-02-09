@@ -1,9 +1,4 @@
-class Sorter
-
-  def initialize
-    @success = true
-  end
-
+class Sorter < Util
   def perform
     success =
       Rails.application.config.source_names.each_with_object([]) do |src, results|
@@ -14,11 +9,5 @@ class Sorter
         end
     end
     @success = success.any?
-  end
-
-  def notify_error(error)
-    @success = false
-    raise error if Rails.env.development? || Rails.env.test?
-    Rails.logger.info ("ERROR #{[error.message, error.backtrace]}")
   end
 end
