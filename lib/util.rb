@@ -2,7 +2,7 @@ class Util
   class NotImplemented < StandardError
   end
 
-  def initialize
+  def initialize(*args)
     @success = true
   end
 
