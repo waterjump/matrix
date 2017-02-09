@@ -4,7 +4,8 @@ RSpec.describe 'Routes', type: :request do
   describe 'GET /routes' do
 
     before(:each) do
-      VCR.use_cassette('matrix') do
+      params = { endpoint: URI.unescape(MatrixGateway.endpoint) }
+      VCR.use_cassette('matrix', erb: params) do
         get routes_path
       end
     end

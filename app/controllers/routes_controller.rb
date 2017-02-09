@@ -1,11 +1,11 @@
 class RoutesController < ApplicationController
 
   def parse
-    success =
-      Rails.application.config.source_names.each_with_object([]) do |src, results|
-        gateway = MatrixGateway.new(src)
-        results << gateway.call
-      end
-    render json: { status: success.all? ? 'OK' : 'Error'}
+    gateway = MatrixGateway.new
+    if gateway.perform
+      render json: { status: 'OK' }, status: 200
+    else
+      render json: { status: 'failure' }, status: 500
+    end
   end
 end
