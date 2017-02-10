@@ -6,14 +6,11 @@ class Parser < Util
   def initialize(source_name)
     super
     @source_name = source_name
-    @results = []
   end
 
   def perform
-    Dir[Rails.root.join('tmp', @source_name, '*')].entries.each do |file|
-      @results << parse(file)
-    end
-    @results
+    files = Dir.glob(Rails.root.join('tmp', @source_name, '*')).entries
+    @results << parse(files)
   end
 
   def parse(*args)
@@ -22,10 +19,14 @@ class Parser < Util
 
   private
 
-  def workload(file)
+  def workload(files)
+    files.map { |file| convert_to_hash(file) }
+  end
+
+  def convert_to_hash(file)
     case file.split('.').last
     when 'csv'
-      return csv_to_hash(file)
+      return { file => csv_to_hash(file) }
     else
       # TODO
     end

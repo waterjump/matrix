@@ -1,15 +1,10 @@
 class Sorter < Util
 
-  def initialize
-    super
-    @results = []
-  end
-
   def perform
     for_each_source do |src|
       parsed_data(src)
     end
-    @success = @results.flatten.any?
+    @success = @results.any?
   end
 
   private

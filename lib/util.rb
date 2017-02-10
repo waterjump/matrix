@@ -4,6 +4,7 @@ class Util
 
   def initialize(*args)
     @success = true
+    @results = []
   end
 
   def perform
