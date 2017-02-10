@@ -6,12 +6,14 @@ class Parser < Util
   def initialize(source_name)
     super
     @source_name = source_name
+    @results = []
   end
 
   def perform
     Dir[Rails.root.join('tmp', @source_name, '*')].entries.each do |file|
-      parse(file)
+      @results << parse(file)
     end
+    @results
   end
 
   def parse(*args)

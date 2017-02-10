@@ -1,15 +1,28 @@
 class Sorter < Util
+
+  def initialize
+    super
+    @results = []
+  end
+
   def perform
-    success =
-      Rails.application.config.source_names.each_with_object([]) do |src, results|
-        next unless Dir.exist?(Rails.root.join('tmp', src))
-        Dir.foreach(Rails.root.join('tmp', src)) do
-          next unless src == 'sentinels'
-          klass = "Parser::#{src.singularize.titleize}".constantize
-          klass.new(src).perform
-          results << true
-        end
-      end
-    @success = success.any?
+    for_each_source do |src|
+      parsed_data(src)
+    end
+    @success = @results.flatten.any?
+  end
+
+  private
+
+  def for_each_source(&block)
+    Rails.application.config.source_names.each do |src|
+      yield(src)
+    end
+  end
+
+  def parsed_data(src)
+    return unless Dir.exist?(Rails.root.join('tmp', src)) && src == 'sentinels'
+    klass = "Parser::#{src.singularize.titleize}".constantize
+    @results << klass.new(src).perform
   end
 end
