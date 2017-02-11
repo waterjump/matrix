@@ -6,24 +6,12 @@ class Parser::Sniffer < Parser
   end
 
   def parse
-    create_instance_variables
+    create_instance_variables('.csv')
     construct
     @results
   end
 
   private
-
-  def create_instance_variables
-    @files.each do |file_name|
-      name = file_name.split('/').last.split('.').first # TODO File#basename
-      instance_variable_set(
-        "@#{name}",
-        workload.detect do |container|
-          container.keys.first =~ /#{name}/
-        end.values.first
-      )
-    end
-  end
 
   def construct
     add_note_times
@@ -33,21 +21,14 @@ class Parser::Sniffer < Parser
 
   def add_note_times
     @sequences.each do |seq|
-      node_time =
-        @node_times.detect do |nt|
-          nt[:node_time_id] == seq[:node_time_id]
-        end
-
+      node_time = join_hashes(seq, @node_times, :node_time_id)
       @legs << seq.merge(node_time) if node_time.present?
     end
   end
 
   def add_route_times
     @legs.each do |leg|
-      route = @routes.detect do |rt|
-        rt[:route_id] == leg[:route_id]
-      end
-
+      route = join_hashes(leg, @routes, :route_id)
       leg.merge!(route) if route.present?
     end
   end
