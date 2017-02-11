@@ -20,15 +20,15 @@ RSpec.shared_examples 'a parser' do
       end
 
       it 'returns a an array' do
-        expect(subject.parse(source_files)).to be_kind_of(Array)
+        expect(subject.parse).to be_kind_of(Array)
       end
 
       it 'returns and array of hashes' do
-        expect(subject.parse(source_files).first).to be_kind_of(Hash)
+        expect(subject.parse.first).to be_kind_of(Hash)
       end
 
       it 'hashes in Zion format' do
-        expect(subject.parse(source_files).first.keys).to eq(zion_format.keys)
+        expect(subject.parse.first.keys).to eq(zion_format.keys)
       end
     end
   end
