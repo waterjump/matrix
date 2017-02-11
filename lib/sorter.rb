@@ -16,7 +16,7 @@ class Sorter < Util
   end
 
   def parsed_data(src)
-    return unless Dir.exist?(Rails.root.join('tmp', src)) && src == 'sentinels'
+    return unless Dir.exist?(Rails.root.join('tmp', src))
     klass = "Parser::#{src.singularize.titleize}".constantize
     @results << klass.new(src).perform
   end
