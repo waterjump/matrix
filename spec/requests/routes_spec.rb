@@ -3,8 +3,14 @@ require 'rails_helper'
 RSpec.describe 'Routes', type: :request do
   describe 'GET /routes' do
 
+    let(:params) do
+      {
+        endpoint: URI.unescape(MatrixGateway.get_endpoint),
+        passphrase: URI.unescape(Rails.application.secrets.passphrase)
+      }
+    end
+
     before(:each) do
-      params = { endpoint: URI.unescape(MatrixGateway.endpoint) }
       VCR.use_cassette('matrix', erb: params) do
         get routes_path
       end
@@ -17,11 +23,13 @@ RSpec.describe 'Routes', type: :request do
     end
 
     it 'works!' do
-      expect(response).to be_success
-      expect(response).to have_http_status(200)
-      parsed_body = JSON.parse(response.body)
-      expect(parsed_body).to be_kind_of(Hash)
-      expect(parsed_body['status']).to eq('OK')
+      VCR.use_cassette('matrix', erb: params) do
+        expect(response).to be_success
+        expect(response).to have_http_status(200)
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body).to be_kind_of(Hash)
+        expect(parsed_body['status']).to eq('OK')
+      end
     end
 
     it 'saves binary files' do

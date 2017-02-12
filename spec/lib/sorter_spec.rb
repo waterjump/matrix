@@ -4,7 +4,7 @@ describe Sorter do
   subject { Sorter.new }
 
   before(:each) do
-    params = { endpoint: URI.unescape(MatrixGateway.endpoint) }
+    params = { endpoint: URI.unescape(MatrixGateway.get_endpoint) }
     VCR.use_cassette('matrix', erb: params) do
       MatrixGateway.new.perform
     end
@@ -13,7 +13,8 @@ describe Sorter do
   describe '#perform' do
     context 'when there are source files' do
       it 'returns success' do
-        expect(subject.perform).to eq(true)
+        subject.perform
+        expect(subject.success).to eq(true)
       end
     end
 

@@ -1,15 +1,15 @@
 class Parser::Loophole < Parser
 
-  def initialize(source_name)
+  def initialize(source_name, files = nil)
     super
     @legs = []
   end
 
   def parse
     create_instance_variables('.json')
+    return [] unless [@routes, @node_pairs].all?
     construct
     format_zion
-    @results
   end
 
   private
@@ -28,9 +28,13 @@ class Parser::Loophole < Parser
           source: @source_name,
           start_node: leg[:start_node],
           end_node: leg[:end_node],
-          start_time: leg[:start_time], # TODO format
-          end_time: leg[:end_time]
+          start_time: format_time(leg[:start_time]),
+          end_time: format_time(leg[:end_time])
         }
     end
+  end
+
+  def format_time(time)
+    time.gsub('Z','')
   end
 end

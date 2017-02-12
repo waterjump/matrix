@@ -2,8 +2,12 @@ require 'zip'
 
 class MatrixGateway < Util
 
-  def self.endpoint
+  def self.get_endpoint
     "#{Rails.application.secrets.endpoint}?passphrase=#{Rails.application.secrets.passphrase}"
+  end
+
+  def self.post_endpoint
+    Rails.application.secrets.endpoint
   end
 
   def perform
@@ -12,13 +16,39 @@ class MatrixGateway < Util
     @success
   end
 
+  def send(workload)
+    envelopes = []
+    workload.each do |leg|
+      envelopes << ZionEnvelope.new(leg).body
+    end
+    envelopes.each do |env|
+      body =
+        env
+          .reverse_merge(
+            passphrase: URI.unescape(Rails.application.secrets.passphrase)
+          )
+          .to_json
+      resp =
+        HTTParty.post(
+          self.class.post_endpoint,
+          body: body,
+          headers: { 'Content-Type' => 'application/json' }
+          )
+      if resp.response.code != '201'
+        Rails.logger.info "Issue sending envelope to Zion: #{env} | #{resp}"
+      end
+    end
+  rescue StandardError => error
+    notify_error(error)
+  end
+
   private
 
   def call
     Rails.application.config.source_names.each do |src|
       File.open(file_name(src), 'w+') do |file|
         file.binmode
-        resp = HTTParty.get("#{self.class.endpoint}&source=#{src}")
+        resp = HTTParty.get("#{self.class.get_endpoint}&source=#{src}")
         file.write resp.parsed_response
         file.close
       end

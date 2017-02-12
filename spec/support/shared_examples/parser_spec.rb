@@ -12,23 +12,36 @@ RSpec.shared_examples 'a parser' do
     }
   end
 
+  before(:each) do
+    MatrixGateway.new.perform
+  end
+
   describe '#parse' do
     context 'when there are no source files' do
-      xit 'returns empty set' do
-        FileUtils.rm_rf(Dir.glob('tmp/*'))
-        expect(subject.perform).to eq([])
+      it 'returns empty set' do
+        parser =
+          subject.class.new(
+            subject.source_name,
+            Dir.glob(Rails.root.join('spec/fixtures/empty_directory/*'))
+              .entries
+          )
+        parser.parse
+        expect(parser.results).to eq([])
       end
 
       it 'returns a an array' do
-        expect(subject.parse).to be_kind_of(Array)
+        subject.parse
+        expect(subject.results).to be_kind_of(Array)
       end
 
       it 'returns and array of hashes' do
-        expect(subject.parse.first).to be_kind_of(Hash)
+        subject.parse
+        expect(subject.results.first).to be_kind_of(Hash)
       end
 
       it 'hashes in Zion format' do
-        expect(subject.parse.first.keys).to eq(zion_format.keys)
+        subject.parse
+        expect(subject.results.first.keys).to eq(zion_format.keys)
       end
     end
   end

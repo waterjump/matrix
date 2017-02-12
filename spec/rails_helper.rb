@@ -14,7 +14,7 @@ VCR.configure do |config|
   config.ignore_localhost = true
   config.default_cassette_options = {
     record: :none,
-    match_requests_on: [:method, :uri],
+    match_requests_on: [:method, :uri, :body],
     allow_playback_repeats: true
   }
 end

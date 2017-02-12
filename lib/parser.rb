@@ -1,20 +1,15 @@
 class Parser < Util
 
-  class NotImplemented < StandardError
-  end
+  attr_reader :source_name
 
-  def initialize(source_name)
+  def initialize(source_name, files = nil)
     super
     @source_name = source_name
-    @files = Dir.glob(Rails.root.join('tmp', source_name, '*')).entries
-  end
-
-  def perform
-    @results << parse
+    @files = files || Dir.glob(Rails.root.join('tmp', source_name, '*')).entries
   end
 
   def parse
-    raise(NotImplemented, "#{self.class} must implement the #parse method")
+    raise(NotImplementedError, "#{self.class} must implement the #parse method")
   end
 
   private
