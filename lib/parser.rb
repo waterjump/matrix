@@ -1,5 +1,4 @@
 class Parser < Util
-
   attr_reader :source_name
 
   def initialize(source_name, files = nil)
@@ -21,21 +20,19 @@ class Parser < Util
   def convert_to_hash(file)
     case File.extname(file)
     when '.csv'
-      return { file => csv_to_hash(file) }
+      { file => csv_to_hash(file) }
     when '.json'
-      return { file => JSON.parse(File.read(file)).with_indifferent_access }
-    else
-      # TODO
+      { file => JSON.parse(File.read(file)).with_indifferent_access }
     end
   end
 
   def csv_to_hash(file)
     CSV.read(
-        file,
-        headers: true,
-        header_converters: :symbol,
-        col_sep: ', ',
-      ).map(&:to_h)
+      file,
+      headers: true,
+      header_converters: :symbol,
+      col_sep: ', '
+    ).map(&:to_h)
   end
 
   def route_ids(hash)
@@ -56,7 +53,7 @@ class Parser < Util
 
   def join_hashes(hash, ary, field_1, field_2 = nil)
     field_2 ||= field_1
-     hash_to_merge =
+    hash_to_merge =
       ary.detect do |hash_2|
         hash_2[field_2] == hash[field_1]
       end

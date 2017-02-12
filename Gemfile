@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.7.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -10,6 +9,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'httparty', '0.14.0'
 gem 'rubyzip'
+gem 'rubocop', require: false
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

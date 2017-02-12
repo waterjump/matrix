@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Routes', type: :request do
   describe 'GET /routes' do
-
     let(:params) do
       {
         endpoint: URI.unescape(MatrixGateway.get_endpoint),

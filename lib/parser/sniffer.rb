@@ -1,5 +1,4 @@
 class Parser::Sniffer < Parser
-
   def initialize(source_name, files = nil)
     super
     @legs = []
@@ -66,7 +65,7 @@ class Parser::Sniffer < Parser
   def start_time(time, zone)
     parts = time.gsub(/\-:T/, ',').split(',')
     offset = calculate_offset(zone)
-    Time.new(parts[0],parts[1],parts[2],parts[3],parts[4],parts[5], offset)
+    Time.new(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], offset)
   end
 
   def calculate_offset(offset)

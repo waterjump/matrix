@@ -1,5 +1,4 @@
 class Parser::Sentinel < Parser
-
   def parse
     return [] unless workload.present?
     workload.each do |container|
@@ -33,7 +32,7 @@ class Parser::Sentinel < Parser
     }
   end
 
-  def format_time(time) # TODO do this the better way
+  def format_time(time) # TODO: do this the better way
     year = time[0, 4]
     month = time[5, 2]
     day = time[8, 2]
@@ -42,7 +41,7 @@ class Parser::Sentinel < Parser
     second = time[17, 2]
     offset = time[19, 6]
     Time.new(year, month, day, hour, minute, second, offset)
-      .utc
-      .strftime('%FT%T')
+        .utc
+        .strftime('%FT%T')
   end
 end

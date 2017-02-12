@@ -1,5 +1,4 @@
 class RoutesController < ApplicationController
-
   def parse
     gateway = MatrixGateway.new
     gateway.perform

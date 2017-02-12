@@ -11,10 +11,10 @@ class ZionEnvelope < Util
 
   def body
     if valid?
-      return @leg
+      @leg
     else
       notify_error(ValidationError.new(@errors))
-      return {}
+      {}
     end
   end
 

@@ -1,5 +1,4 @@
 class Parser::Loophole < Parser
-
   def initialize(source_name, files = nil)
     super
     @legs = []
@@ -35,6 +34,6 @@ class Parser::Loophole < Parser
   end
 
   def format_time(time)
-    time.gsub('Z','')
+    time.delete('Z')
   end
 end

@@ -1,5 +1,4 @@
 class Sorter < Util
-
   def perform
     for_each_source do |src|
       parsed_data(src)
@@ -9,7 +8,7 @@ class Sorter < Util
 
   private
 
-  def for_each_source(&block)
+  def for_each_source
     Rails.application.config.source_names.each do |src|
       yield(src)
     end
@@ -20,6 +19,6 @@ class Sorter < Util
     klass = "Parser::#{src.singularize.titleize}".constantize
     parser = klass.new(src)
     parser.parse
-    @results = @results + parser.results
+    @results += parser.results
   end
 end
