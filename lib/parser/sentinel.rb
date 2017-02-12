@@ -32,16 +32,9 @@ class Parser::Sentinel < Parser
     }
   end
 
-  def format_time(time) # TODO: do this the better way
-    year = time[0, 4]
-    month = time[5, 2]
-    day = time[8, 2]
-    hour = time[11, 2]
-    minute = time[14, 2]
-    second = time[17, 2]
-    offset = time[19, 6]
-    Time.new(year, month, day, hour, minute, second, offset)
-        .utc
-        .strftime('%FT%T')
+  def format_time(time)
+    DateTime.strptime(time, '%Y-%m-%dT%H:%M:%S%z')
+            .utc
+            .strftime('%FT%T')
   end
 end

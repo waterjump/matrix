@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'a parser' do
+  let(:params) do
+    {
+      endpoint: URI.unescape(MatrixGateway.get_endpoint),
+      passphrase: URI.unescape(Rails.application.secrets.passphrase)
+    }
+  end
+
   let(:zion_format) do
     {
       source: nil,
@@ -12,7 +19,9 @@ RSpec.shared_examples 'a parser' do
   end
 
   before(:each) do
-    MatrixGateway.new.perform
+    VCR.use_cassette('matrix', erb: params) do
+      MatrixGateway.new.perform
+    end
   end
 
   describe '#parse' do

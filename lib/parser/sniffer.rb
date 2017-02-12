@@ -63,13 +63,8 @@ class Parser::Sniffer < Parser
   end
 
   def start_time(time, zone)
-    parts = time.gsub(/\-:T/, ',').split(',')
-    offset = calculate_offset(zone)
-    Time.new(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], offset)
-  end
-
-  def calculate_offset(offset)
-    return 0 if offset == 'UTC±00:00'
-    offset[-6, 6]
+    DateTime.strptime(
+      "#{time}#{zone.delete('UTC').tr('±', '-')}", '%Y-%m-%dT%H:%M:%S%z'
+    ).utc
   end
 end
